@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 module.exports = async function (context, req) {
     const value = req.query.value;
     
-    var tableSvc = azure.createTableService('apteraarduino','NO3JnRJS2T0K7+0uicXmnDZySW6Tci7iin3jlPV1lz98gx0WDKG802orMoeLMDqBwUGd4/9nfqrtblRBShrwnA==');
+    var tableSvc = azure.createTableService('apteraarduino',process.env["AzureTableStorageAccessKey"]);
     
     var entity = {
         PartitionKey: {'_':'chrisp_1'},
