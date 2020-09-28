@@ -3,37 +3,28 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = async function (context, req) {
 
+    var tableSvc = azure.createTableService('apteraarduino',process.env["AzureTableStorageAccessKey"]);
     var query = new azure.TableQuery()
-        .select(['value'])
-        .top(1)
-        .where('timestamp > ?', '2020-09-27');
-        context.res = {
+        //.select(['value'])
+        .top(1);
+        //.where('Timestamp ge datetime 2020-09-28T02:46:47.135Z');
+        
+    
+        tableSvc.queryEntities('cpdata', query, null, function(error, result, response) {
+        if (!error) {
+          // result.entries contains entities matching the query
+          context.res = {
             // status: 200, /* Defaults to 200 */
-            body: query//responseMessage
-        };
-    // const value = req.query.value;
+            body: result.entries
+            };
+        } else {
+            context.res = {
+                // status: 200, /* Defaults to 200 */
+                body: "error"
+                };
+        }
+    });
     
-    // var tableSvc = azure.createTableService('apteraarduino',process.env["AzureTableStorageAccessKey"]);
-    
-    // var entity = {
-    //     PartitionKey: {'_':'chrisp_1'},
-    //     RowKey: {'_':uuidv4()},
-    //     value: {'_':value}
-    // };
-
-    // tableSvc.insertEntity('cpdata',entity,function(error, result, response) {
-    //     if (!error){
-    //         context.res = {
-    //             // status: 200, /* Defaults to 200 */
-    //             body: 'Good'//responseMessage
-    //         };
-    //     } else {
-    //         context.res = {
-    //             // status: 200, /* Defaults to 200 */
-    //             body: 'Error'//responseMessage
-    //         };
-    //     }
-    // });
 
     context.log('JavaScript HTTP trigger function processed a request.');
 }
