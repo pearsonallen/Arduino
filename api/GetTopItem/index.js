@@ -6,7 +6,7 @@ module.exports = async function (context, req) {
     var tableSvc = azure.createTableService('apteraarduino',process.env["AzureTableStorageAccessKey"]);
     var query = new azure.TableQuery()
         .select(['value'])
-        .top(1);
+        .top(1)
         .where('Timestamp ge datetime 2020-09-28T02:46:47.135Z');
         
     
