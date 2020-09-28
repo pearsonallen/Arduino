@@ -5,7 +5,8 @@ module.exports = async function (context, req) {
 
     var tableSvc = azure.createTableService('apteraarduino',process.env["AzureTableStorageAccessKey"]);
     var query = new azure.TableQuery()
-        .top(1);
+        .top(1)
+        .where('RowKey eq ?','000062ce-81c4-4c2d-9d7d-8a56be704c1d');
         
         tableSvc.queryEntities('cpdata', query, null, function(error, result, response) {
         if (!error) {

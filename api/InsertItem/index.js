@@ -6,8 +6,6 @@ module.exports = async function (context, req) {
     
     var tableSvc = azure.createTableService('apteraarduino',process.env["AzureTableStorageAccessKey"]);
     
-    
-
     var entity = {
         PartitionKey: {'_':'chrisp_1'},
         RowKey: {'_':uuidv4()},
