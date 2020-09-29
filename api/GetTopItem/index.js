@@ -1,28 +1,29 @@
-var azure = require("azure-storage");
+let azure = require("azure-storage");
 module.exports = async function (context, req) {
-    var tableSvc = azure.createTableService('apteraarduino',process.env["AzureTableStorageAccessKey"]);
-    var query = new azure.TableQuery()
+    context.res = {
+        body: await GetValue()
+    }
+}
+
+async function GetValue() {
+    let tableSvc = azure.createTableService('apteraarduino',process.env["AzureTableStorageAccessKey"]);
+    let query = new azure.TableQuery()
         .top(1)
         .where('RowKey eq ?','000062ce-81c4-4c2d-9d7d-8a56be704c1d');
-    
-    tableSvc.queryEntities('cpdata', query, null, function(error, result, response) {
-    if (!error) {
-        // result.entries contains entities matching the query
-        
-        context.res = {
-        // status: 200, /* Defaults to 200 */
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: result.entries[0].value._
-        };
-    } else {
-        context.res = {
-            // status: 200, /* Defaults to 200 */
-            body: "error"
-            };
-    }
-    });
-    
-    context.log('JavaScript HTTP trigger function processed a request.');
+    let r = await queryEntities(tableSvc, 'cpdata', query, null);
+    return r.entries[0].value._;
 }
+
+async function queryEntities(tableService, ...args) {
+    return new Promise((resolve, reject) => {
+        let promiseHandling = (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        };
+        args.push(promiseHandling);
+        tableService.queryEntities.apply(tableService, args);
+    });
+};
