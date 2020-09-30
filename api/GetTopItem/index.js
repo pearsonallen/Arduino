@@ -12,7 +12,7 @@ async function GetValue() {
 
     let query = new azure.TableQuery()
         .top(1)
-        .where('Timestamp >= ?date?', new Date(new Date().setSeconds(-10)));
+        .where('Timestamp >= ?date?', new Date(new Date().setSeconds(-1)));
         
     let r = await queryEntities(tableSvc, 'cpdata', query, null);
     return r.entries[0].value._;
