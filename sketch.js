@@ -80,5 +80,5 @@ function setup() {
 
 //http://localhost:7071
 function getValue() {
-    httpGet('http://localhost:7071/api/GetTopItem','text',false,doAction);
+    httpGet('/api/GetTopItem','text',false,doAction);
   }
